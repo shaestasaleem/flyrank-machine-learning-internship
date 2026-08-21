@@ -1,0 +1,52 @@
+{
+  "assignment": "ML-10",
+  "artifact": "Content Action Playbook",
+  "development_period": "2026-03",
+  "validation_design": "5-fold GroupKFold by client_hash_id",
+  "random_seed": 42,
+  "population": {
+    "rows": 27186,
+    "observed_future_decline_base_rate": 0.550356801294784,
+    "population_note": "Evaluation population requires full-month March availability."
+  },
+  "pooled_grouped_oof_metrics": {
+    "precision_at_20": 0.75,
+    "precision_at_50": 0.82,
+    "roc_auc": 0.6476586726950859,
+    "note": "These are pooled out-of-fold metrics, not averages of fold-level metrics."
+  },
+  "queue_thresholds": {
+    "top_5_percent_model_score": 0.8125450010957189,
+    "top_20_percent_model_score": 0.6594618804515483,
+    "low_exposure_q1_impressions": 327.0,
+    "high_exposure_q3_impressions": 1656.0
+  },
+  "action_counts": {
+    "NO_IMMEDIATE_ACTION": 21748,
+    "WATCH": 4078,
+    "REVIEW_WITH_CAUTION": 1032,
+    "PRIORITY_REVIEW": 328
+  },
+  "action_shares": {
+    "NO_IMMEDIATE_ACTION": 0.7999705730890899,
+    "WATCH": 0.15000367836386375,
+    "REVIEW_WITH_CAUTION": 0.037960715073935114,
+    "PRIORITY_REVIEW": 0.01206503347311116
+  },
+  "review_workload": {
+    "immediate_review_rows": 1360,
+    "immediate_review_share": 0.05002574854704627,
+    "low_exposure_caution_share": 0.7588235294117647,
+    "conflicting_signal_share": 0.9522058823529411,
+    "recent_clicks_down_share": 0.04779411764705882
+  },
+  "intended_use": "Directional decision-support for prioritizing human editorial review.",
+  "not_supported": [
+    "automatic content rewriting",
+    "automatic publishing",
+    "automatic deletion or redirect",
+    "claiming a refresh is required",
+    "claiming a refresh will improve performance"
+  ],
+  "sealed_period_status": "June 2026 remains sealed and is not used in this playbook."
+}
