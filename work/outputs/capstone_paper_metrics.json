@@ -1,0 +1,113 @@
+{
+  "assignment": "ML-11",
+  "research_question": "Can a simple, interpretable machine-learning model rank content that is more likely to experience near-term click decline better than a transparent rule baseline, while remaining suitable for human editorial decision-support?",
+  "data": {
+    "warehouse_release": "v20260703",
+    "development_period": "2026-03",
+    "march_daily_rows": 9841378,
+    "anonymized_clients": 55,
+    "anonymized_content_items": 331437,
+    "gsc_available_rows": 3611061,
+    "gsc_available_share": 0.36692635929643186,
+    "modeling_rows": 27186,
+    "future_decline_rows": 14962,
+    "future_decline_base_rate": 0.550356801294784,
+    "decision_cutoff": "2026-03-24",
+    "outcome_window": "2026-03-25 to 2026-03-31",
+    "sealed_period": "2026-06"
+  },
+  "methodology": {
+    "model": "Logistic Regression",
+    "validation": "5-fold GroupKFold by anonymized client",
+    "random_seed": 42,
+    "features": [
+      "recent_impressions_7d",
+      "recent_clicks_7d",
+      "recent_ctr",
+      "recent_avg_position",
+      "pre_decision_click_change_7d",
+      "ctr_vs_expected"
+    ],
+    "baseline": "Recent click increase > 0 AND ctr_vs_expected > 1.20; eligible rows ranked by recent impressions",
+    "population_selection_caution": "Development population requires available_days == 31, which uses dates after the March 24 decision cutoff. This is not a model feature but is not decision-time-safe for live eligibility."
+  },
+  "fold_mean_results": {
+    "precision_at_20": {
+      "baseline": 0.6699999999999999,
+      "model": 0.8100000000000002
+    },
+    "precision_at_50": {
+      "baseline": 0.692,
+      "model": 0.8400000000000001
+    },
+    "roc_auc": {
+      "baseline": 0.5802378605845971,
+      "model": 0.6689284693634571
+    }
+  },
+  "pooled_grouped_oof_model": {
+    "precision_at_20": 0.75,
+    "precision_at_50": 0.82,
+    "roc_auc": 0.6476586726950859,
+    "note": "These pooled OOF metrics are a separate aggregation from the mean of fold-level metrics."
+  },
+  "cross_fold_variability": {
+    "model_auc_sd": 0.051108283058740094,
+    "model_auc_min": 0.5885864782261511,
+    "model_auc_max": 0.7078498684050568,
+    "model_p20_better_folds": 4,
+    "model_p20_tied_folds": 1,
+    "model_p50_better_folds": 5,
+    "model_auc_better_folds": 5
+  },
+  "playbook": {
+    "top_5_percent_score_threshold": 0.8125450010957185,
+    "top_20_percent_score_threshold": 0.6594618804515487,
+    "low_exposure_q1": 327.0,
+    "high_exposure_q3": 1656.0,
+    "priority_review": {
+      "rows": 328,
+      "share": 0.01206503347311116
+    },
+    "review_with_caution": {
+      "rows": 1032,
+      "share": 0.037960715073935114
+    },
+    "watch": {
+      "rows": 4078,
+      "share": 0.15000367836386375
+    },
+    "no_immediate_action": {
+      "rows": 21748,
+      "share": 0.7999705730890899
+    },
+    "immediate_review_rows": 1360,
+    "immediate_review_share": 0.05002574854704627,
+    "low_exposure_caution_share_review_pool": 0.7588235294117647,
+    "conflicting_signal_share_review_pool": 0.9522058823529411,
+    "recent_clicks_down_share_review_pool": 0.04779411764705882,
+    "threshold_note": "Action thresholds are operational heuristics. A live top-K should reflect available human review capacity."
+  },
+  "claim_framing": {
+    "supported_claim": "Within the March 2026 grouped-client validation experiment, Logistic Regression ranked the defined future-click-decline outcome more effectively than the transparent rule baseline.",
+    "intended_use": "Directional decision-support for human editorial review.",
+    "not_supported": [
+      "A high-scoring page definitely requires refresh.",
+      "Refreshing a flagged page will increase clicks.",
+      "The model establishes causal refresh impact.",
+      "The model discovered a search-engine ranking algorithm."
+    ]
+  },
+  "public_safety": {
+    "contains_client_names": false,
+    "contains_urls": false,
+    "contains_private_queries": false,
+    "contains_client_hashes": false,
+    "contains_content_hashes": false,
+    "contains_row_level_future_outcomes": false
+  },
+  "data_credit": {
+    "text": "Built on the FlyRank ML Internship dataset",
+    "url": "https://flyrank.ai"
+  }
+}
